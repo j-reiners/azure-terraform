@@ -1,0 +1,29 @@
+apiVersion: external-secrets.io/v1alpha1
+kind: ExternalSecret
+metadata:
+  name: "es-helm-charts-repo"
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: azure-vault1
+  data:
+  - secretKey: password
+    remoteRef:
+      key: github-token
+  target:
+    creationPolicy: Owner
+    name: helm-charts-repo
+    template:
+      engineVersion: v2
+      metadata:
+        annotations:
+          managed-by: argocd.argoproj.io
+        labels:
+          argocd.argoproj.io/secret-type: repository
+      data:
+        type: git
+        name: helm-charts
+        url: https://github.com/j-reiners/helm-charts.git
+        username: j-reiners
+        password: {{` "{{ .password }}" `}}

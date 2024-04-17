@@ -1,0 +1,21 @@
+resource "helm_release" "cert_manager" {
+ name    = "cert-manager"
+ repository = "https://charts.jetstack.io"
+ chart   = "cert-manager"
+ namespace = "cert-manager"
+ create_namespace = true
+ values = [
+    file("${path.module}/../../../helm/values/cert-manager.yaml")
+  ]
+#  force_update = true
+}
+
+resource "helm_release" "cert_manager_cluster_issuer" {
+ name    = "cert-manager-cluster-issuer"
+ chart   = "../../../helm/charts/cert-manager-issuer"
+ version = "1.0.1"
+ namespace = "cert-manager"
+ create_namespace = false
+ values = []
+#  force_update = true
+}

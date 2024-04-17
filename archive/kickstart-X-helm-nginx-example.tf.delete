@@ -1,0 +1,34 @@
+# data "azurerm_key_vault" "jr_infra" {
+#   name                = "jr-infra"
+#   resource_group_name = azurerm_resource_group.p2_k8s.name
+# }
+
+# data "azurerm_key_vault_secrets" "jr_infra_secrets" {
+#  key_vault_id = data.azurerm_key_vault.jr_infra.id
+# }
+
+# resource "helm_release" "aks_secret_provider" {
+#  name    = "aks-secret-provider"
+#  chart   = "../../helm/charts/aks-secret-provider"
+#  version = "1.0.1"
+#  namespace = "nginx-example"
+#  create_namespace = true
+#  values = [yamlencode({
+#    vaultName = data.azurerm_key_vault.jr_infra.name
+#    tenantId  = data.azurerm_key_vault.jr_infra.tenant_id
+#    clientId  = data.azurerm_kubernetes_cluster.aks_infra.key_vault_secrets_provider[0].secret_identity[0].client_id
+#    secrets   = data.azurerm_key_vault_secrets.jr_infra_secrets.names # secrets to expose
+#    test = "test123"
+#  })]
+# #  force_update = true
+# }
+
+# resource "helm_release" "nginx_example" {
+#  name    = "nginx-example"
+#  chart   = "../../helm/charts/nginx-example"
+#  version = "1.0.25"
+#  namespace = "nginx-example"
+#  create_namespace = true
+#  values = []
+# #  force_update = true
+# }

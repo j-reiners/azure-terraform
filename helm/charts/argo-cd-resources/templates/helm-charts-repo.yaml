@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-charts-repo
+  namespace: argocd
+  annotations:
+    managed-by: argocd.argoproj.io
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  type: git
+  name: helm-charts
+  url: https://github.com/j-reiners/helm-charts.git
+  username: j-reiners
+  password: {{ .Values.githubToken }}

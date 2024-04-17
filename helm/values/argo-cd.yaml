@@ -1,0 +1,29 @@
+dex:
+  enabled: false
+notifications:
+  enabled: false
+applicationSet:
+  enabled: false
+server:
+  extraArgs:
+    - --insecure
+global:
+  domain: argocd.jr-k8s.de
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: webapprouting.kubernetes.azure.com
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-staging"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    extraTls:
+      - hosts:
+        - argocd.jr-k8s.de
+        # Based on the ingress controller used secret might be optional
+        secretName: wildcard-tls

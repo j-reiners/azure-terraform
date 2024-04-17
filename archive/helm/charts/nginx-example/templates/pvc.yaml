@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-standard-lrs
+  resources:
+    requests:
+      storage: 10Gi

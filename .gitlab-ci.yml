@@ -1,0 +1,43 @@
+workflow:
+  rules:
+    - when: never
+
+variables:
+  IMAGE_TAG: terraform_1.0.0
+  STAGE: 
+    value: sandbox
+    description: "at the moment only sandbox possible"
+
+image:
+  name: quambel1/homelab:${IMAGE_TAG}
+  entrypoint: [""]
+
+before_script:
+  - export TF_HTTP_USERNAME=gitlab-ci-token
+  - export TF_HTTP_PASSWORD=${CI_JOB_TOKEN}
+  - export TF_VAR_client_secret=${TERRAF_CLIENT_SECRET}
+  - export TF_VAR_github_token=${TERRAF_GITHUB_TOKEN}
+  - cd stage/$STAGE
+  - terraform init
+
+stages:
+ - plan
+ - apply
+
+plan:
+  stage: plan
+  script:
+    - terraform --version
+    - terraform validate
+    - terraform plan -out "planfile"
+  artifacts:
+    paths:
+      - stage/$STAGE/planfile
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -input=false "planfile"
+  dependencies:
+    - plan
+  when: manual
