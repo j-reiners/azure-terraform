@@ -67,3 +67,13 @@ resource "azurerm_key_vault_secret" "aks1_github_token" {
     azurerm_key_vault_access_policy.aks1_terraform 
   ]
 }
+
+resource "azurerm_key_vault_secret" "aks1_es_admin_password" {
+  name         = "es-admin-password"
+  value        = var.es_admin_password
+  key_vault_id = azurerm_key_vault.aks1.id
+
+  depends_on = [ 
+    azurerm_key_vault_access_policy.aks1_terraform 
+  ]
+}

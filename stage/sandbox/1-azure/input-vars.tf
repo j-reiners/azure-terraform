@@ -9,3 +9,9 @@ variable "github_token" {
   type        = string
   sensitive = true
 }
+
+variable "es_admin_password" {
+  description = "elasticsearch admin password"
+  type        = string
+  sensitive = true
+}
