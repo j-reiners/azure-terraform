@@ -8,7 +8,7 @@ server:
   extraArgs:
     - --insecure
 global:
-  domain: argocd.jr-k8s.de
+  domain: argocd.test.jr-k8s.de
 
 configs:
   params:
@@ -24,6 +24,6 @@ server:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     extraTls:
       - hosts:
-        - argocd.jr-k8s.de
+        - argocd.test.jr-k8s.de
         # Based on the ingress controller used secret might be optional
         secretName: wildcard-tls
