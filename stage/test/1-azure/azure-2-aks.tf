@@ -3,15 +3,14 @@ resource "azurerm_kubernetes_cluster" "aks1" {
   location            = azurerm_resource_group.aks1.location
   resource_group_name = azurerm_resource_group.aks1.name
   dns_prefix          = "aks1"
-#   automatic_channel_upgrade = none
+  # automatic_channel_upgrade = none
   kubernetes_version = "1.27.9"
   # reuqires LTSRequiresPremiumTier
-  #support_plan = "AKSLongTermSupport"
+  # support_plan = "AKSLongTermSupport"
 
   default_node_pool {
     name       = "agentpool"
-    // maximal aktuell 4 VMS erlaubt im free tier
-    // 3 master automatishc dabei
+    // max 4 VMs, master already 3
     node_count = 1
     # vm_size    = "Standard_D2_v2"
     vm_size    = "Standard_E4as_v5"

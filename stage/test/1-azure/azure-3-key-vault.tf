@@ -46,7 +46,7 @@ resource "azurerm_key_vault_access_policy" "aks1_terraform" {
   ]
 }
 
-// kubernetes cluster Zugriff gewaehren
+// kubernetes cluster
 resource "azurerm_key_vault_access_policy" "aks1_kubernetes" {
   key_vault_id = azurerm_key_vault.aks1.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
