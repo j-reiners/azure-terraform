@@ -58,22 +58,54 @@ resource "azurerm_key_vault_access_policy" "aks1_kubernetes" {
   ]
 }
 
-resource "azurerm_key_vault_secret" "aks1_github_token" {
-  name         = "github-token"
-  value        = var.github_token
-  key_vault_id = azurerm_key_vault.aks1.id
-
-  depends_on = [ 
-    azurerm_key_vault_access_policy.aks1_terraform 
-  ]
+locals {
+  key_vault_secrets = [{
+    name   = "github-token"
+    value  = var.github_token
+    key_vault_id = azurerm_key_vault.aks1.id
+  },
+  {
+    name   = "es-admin-password"
+    value  = var.es_admin_password
+    key_vault_id = azurerm_key_vault.aks1.id
+  }]
 }
 
-resource "azurerm_key_vault_secret" "aks1_es_admin_password" {
-  name         = "es-admin-password"
-  value        = var.es_admin_password
-  key_vault_id = azurerm_key_vault.aks1.id
+module "key_vault_secret" {
+  for_each = { for secret in var.key_vault_secrets :  secret.name => secret}
+  source = "../../../modules/key_vault_secret"
 
-  depends_on = [ 
-    azurerm_key_vault_access_policy.aks1_terraform 
-  ]
+  providers = {
+    azurerm = azurerm
+  }
+
+  name          = each.value.name
+  value         = each.value.value
+  key_vault_id  = azurerm_key_vault.aks1.id
+
+  # name          = "github-token"
+  # value         = var.github_token
+  # key_vault_id  = azurerm_key_vault.aks1.id
+
+  # secrets = [{
+  #   name   = "github-token"
+  #   value  = var.github_token
+  #   key_vault_id = azurerm_key_vault.aks1.id
+  # },
+  # {
+  #   name   = "es-admin-password"
+  #   value  = var.es_admin_password
+  #   key_vault_id = azurerm_key_vault.aks1.id
+  # }]
 }
+
+# resource "azurerm_key_vault_secret" "aks1_entry" {
+#   for_each = { for secret in var.secrets }
+#   name         = secret.value.name
+#   value        = secret.value.value
+#   key_vault_id = secret.value.key_vault_id
+
+#   depends_on = [ 
+#     azurerm_key_vault_access_policy.aks1_terraform 
+#   ]
+# }

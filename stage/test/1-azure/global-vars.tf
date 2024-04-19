@@ -33,3 +33,12 @@ variable "vault_name" {
   type        = string
   default     = "jr-aks1"
 }
+
+variable "key_vault_secrets" {
+  type = set(object({
+    name = string
+    value = string
+    key_vault_id = string
+  }))
+  default = []
+}
