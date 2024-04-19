@@ -72,7 +72,7 @@ locals {
 }
 
 module "key_vault_secret" {
-  for_each = { for secret in var.key_vault_secrets :  secret.name => secret}
+  for_each = { for secret in local.key_vault_secrets :  secret.name => secret}
   source = "../../../modules/key_vault_secret"
 
   providers = {
