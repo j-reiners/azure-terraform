@@ -45,7 +45,7 @@ resource "azurerm_kubernetes_cluster" "aks1" {
   }
 
   tags = {
-    Environment = "sandbox"
+    Environment = "test"
   }
 }
 
