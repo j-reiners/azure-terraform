@@ -82,4 +82,6 @@ module "key_vault_secret" {
   name          = each.value.name
   value         = each.value.value
   key_vault_id  = azurerm_key_vault.aks1.id
+
+  depends_on = [ azurerm_key_vault_access_policy.aks1_terraform ]
 }
